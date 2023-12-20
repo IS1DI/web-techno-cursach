@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>[[#{news.list.headline}]]</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="flex flex-wrap mb-6">
+        <h1 class="grow text-3xl md:text-4xl font-medium mb-2">[[#{news.list.headline}]]</h1>
+        <div>
+            <a th:href="@{/news/add}"
+               class="inline-block text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300  focus:ring-4 rounded px-5 py-2">[[#{news.list.createNew}]]</a>
+        </div>
+    </div>
+    <div th:if="${newses.isEmpty()}">[[#{news.list.empty}]]</div>
+    <div th:if="${!newses.isEmpty()}" class="overflow-x-auto">
+        <ul class="w-full">
+            <li th:each="news : ${newses}" >
+
+                <div class="float-right whitespace-nowrap py-4 px-4">
+                    <a th:href="@{/news/edit/{id}(id=${news.id})}"
+                       class="inline-block text-white bg-orange-400 hover:bg-orange-600 focus:ring-orange-200 focus:ring-4 rounded px-2.5 py-1.5 text-sm">[[#{news.list.edit}]]</a>
+                    <form th:action="@{/news/delete/{id}(id=${news.id})}"
+                          th:hx-confirm="#{delete.confirm}" method="post" class="inline">
+                        <button type="submit"
+                                class="inline-block text-white bg-red-500 hover:bg-red-600 focus:ring-red-200 focus:ring-4 rounded px-2.5 py-1.5 text-sm">
+                            [[#{news.list.delete}]]
+                        </button>
+                    </form>
+                </div>
+                <div class="border-solid border-2 rounded-lg mb-5">
+                    <h2 class="grow object-center text-3xl md:text-4xl font-medium py-4 px-4" th:text="${news.title}"></h2>
+                    <p th:text="${news.content}"></p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
